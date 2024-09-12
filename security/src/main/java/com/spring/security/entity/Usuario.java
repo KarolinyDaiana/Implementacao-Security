@@ -28,10 +28,10 @@ public class Usuario implements UserDetails {
     private String senha;
     private String email;
     private String perfil;
-//    private boolean habilitado = true;
-//    private boolean habilitado;  O GetAthorities
+//    private boolean habilitado = true; 
+//    private boolean habilitado;  O GetAthorities 
 //    private boolean senhaExpirada;
-//
+//    
 //    @Override
 //    public boolean isCredentialsNonExpired() {
 //        return !this.senhaExpirada;

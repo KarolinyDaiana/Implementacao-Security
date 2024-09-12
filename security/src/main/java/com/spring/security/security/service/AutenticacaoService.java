@@ -1,6 +1,8 @@
 package com.spring.security.security.service;
 
 import com.spring.security.entity.Usuario;
+import com.spring.security.entity.cenario_3.PessoaCenarioTres;
+import com.spring.security.entity.cenario_3.UsuarioCenarioTres;
 import com.spring.security.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class AutenticacaoService implements UserDetailsService {
 
     private UsuarioRepository usuarioRepository;
+    //aqui seria o pessoaRepository
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -25,7 +28,9 @@ public class AutenticacaoService implements UserDetailsService {
             usuario = tentarBuscarPorEmail(username);
         }
         try {
-            return usuario.get();
+//            Usuario usuario1 = usuario.get();
+            PessoaCenarioTres pessoa = usuario.get(); //seria o pessoa repository
+            return new UsuarioCenarioTres(pessoa);
         } catch (NoSuchElementException e) {
             throw new UsernameNotFoundException("O usuário " + username + " não foi encontrado");
         }
