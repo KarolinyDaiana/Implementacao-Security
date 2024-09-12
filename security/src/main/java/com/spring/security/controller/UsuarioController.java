@@ -4,6 +4,7 @@ import com.spring.security.entity.Usuario;
 import com.spring.security.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> criarUsuario(@RequestBody Usuario usuario) {
         usuarioService.criarUsuario(usuario);
         return ResponseEntity.ok().build();

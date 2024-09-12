@@ -7,15 +7,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig {
+
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityContextRepository securityContextRepository() {
@@ -32,10 +36,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity config) throws Exception {
-        config.securityContext(custom -> securityContextRepository());
-        config.formLogin( custom -> custom.disable());
+//        config.securityContext(custom -> securityContextRepository());
 //        config.httpBasic( custom -> custom.disable());
 //        ALGO SIMILAR AO FORM LOGIN, MAS É EM FORMATO DE ALERT
+        config.formLogin( custom -> custom.disable());
         config.logout(custom -> custom.disable());
 //        config.authorizeHttpRequests(http -> {
 //            http.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
@@ -52,6 +56,10 @@ public class SecurityConfig {
 //            .hasAnyRole() e .hasAuthority()
 //        });
         config.csrf(custom -> custom.disable());
+        // Configuração extra para JWT >>>
+        config.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        config.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        // <<<
         return config.build();
     }
 
