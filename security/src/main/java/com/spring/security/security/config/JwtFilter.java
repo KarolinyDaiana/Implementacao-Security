@@ -40,6 +40,8 @@ public class JwtFilter extends OncePerRequestFilter {
         if (!isPublicEndpoint(uri, method)) {
             try {
 //        request.getRequestURI();  // n tem dominio, é local
+                //se n tem o setAllowCredentials(true) no securityConfig ele n consegue achar
+                //no front, se nao for publico, tem que colocar withAloowedCredentials(true) eu acho
                 Cookie[] cookies = request.getCookies();
                 Optional<Cookie> cookieOptional = Arrays.stream(cookies)
                     .filter(cookie -> cookie.getName().equals("USERTOKEN")).findFirst();

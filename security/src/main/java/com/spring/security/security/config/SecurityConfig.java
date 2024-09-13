@@ -1,12 +1,14 @@
 package com.spring.security.security.config;
 
 import com.spring.security.security.service.AutenticacaoService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +16,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor
@@ -60,6 +67,7 @@ public class SecurityConfig {
         config.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         config.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // <<<
+        config.cors(custom -> custom.configurationSource(corsConfigurationSource()));
         return config.build();
     }
 
@@ -77,6 +85,20 @@ public class SecurityConfig {
 //        authProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
 //        return authProvider
 //    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedOrigin("http://localhost:3000"); se quiser um especifico
+        configuration.setAllowedOrigins(List.of("https://top.care", "http://localhost:3000","https://teste.top.care"));
+        configuration.setAllowedHeaders(List.of("*")); //qualquer coisa
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
