@@ -69,6 +69,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> login(HttpServletResponse response) {
         Cookie cookie = cookieUtils.removerCookie();
         response.addCookie(cookie);

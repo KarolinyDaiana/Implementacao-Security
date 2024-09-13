@@ -1,5 +1,6 @@
 package com.spring.security.entity;
 
+import com.spring.security.enums.Perfil;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -27,7 +29,7 @@ public class Usuario implements UserDetails {
     private String usuario;
     private String senha;
     private String email;
-    private String perfil;
+    private Perfil perfil;
 //    private boolean habilitado = true;
 //    private boolean habilitado;  O GetAthorities
 //    private boolean senhaExpirada;
@@ -46,7 +48,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(perfil);
     }
 
     @Override
@@ -59,11 +61,10 @@ public class Usuario implements UserDetails {
         return this.usuario;
     }
 
-    public Usuario(String nome, String usuario, String senha, String email, String perfil) {
+    public Usuario(String nome, String usuario, String senha, String email) {
         this.nome = nome;
         this.usuario = usuario;
         this.senha = senha;
         this.email = email;
-        this.perfil = perfil;
     }
 }

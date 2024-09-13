@@ -1,12 +1,15 @@
 package com.spring.security.security.config;
 
+import com.spring.security.enums.Perfil;
 import com.spring.security.security.service.AutenticacaoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,6 +27,7 @@ import java.util.List;
 
 @Configuration
 @AllArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -67,6 +71,13 @@ public class SecurityConfig {
         config.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         config.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // <<<
+//        config.authorizeHttpRequests(http -> {
+//            http.requestMatchers(HttpMethod.POST, "/usuario")
+//                    .hasAuthority(Perfil.ADMIN.getAuthority()); //pode colocar ("ADMIN"), mas é ideal dese jeito
+//            http.requestMatchers(HttpMethod.POST, "/auth/login")
+//                    .permitAll();
+//            http.anyRequest().authenticated();
+//        });
         config.cors(custom -> custom.configurationSource(corsConfigurationSource()));
         return config.build();
     }

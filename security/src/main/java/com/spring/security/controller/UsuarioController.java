@@ -1,6 +1,7 @@
 package com.spring.security.controller;
 
 import com.spring.security.entity.Usuario;
+import com.spring.security.enums.Perfil;
 import com.spring.security.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ADMIM')")
     public ResponseEntity<?> criarUsuario(@RequestBody Usuario usuario) {
         usuarioService.criarUsuario(usuario);
         return ResponseEntity.ok().build();

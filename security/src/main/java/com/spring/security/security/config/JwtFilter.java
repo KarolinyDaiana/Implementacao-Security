@@ -36,6 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String uri = request.getRequestURI();
         String method = request.getMethod();
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
 
         if (!isPublicEndpoint(uri, method)) {
             try {
