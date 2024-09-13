@@ -71,13 +71,13 @@ public class SecurityConfig {
         config.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         config.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // <<<
-//        config.authorizeHttpRequests(http -> {
-//            http.requestMatchers(HttpMethod.POST, "/usuario")
-//                    .hasAuthority(Perfil.ADMIN.getAuthority()); //pode colocar ("ADMIN"), mas é ideal dese jeito
-//            http.requestMatchers(HttpMethod.POST, "/auth/login")
-//                    .permitAll();
-//            http.anyRequest().authenticated();
-//        });
+        config.authorizeHttpRequests(http -> {
+            http.requestMatchers(HttpMethod.POST, "/usuario")
+                    .hasAuthority(Perfil.ADMIN.getAuthority()); //pode colocar ("ADMIN"), mas é ideal dese jeito
+            http.requestMatchers(HttpMethod.POST, "/auth/login")
+                    .permitAll();
+            http.anyRequest().authenticated();
+        });
         config.cors(custom -> custom.configurationSource(corsConfigurationSource()));
         return config.build();
     }
