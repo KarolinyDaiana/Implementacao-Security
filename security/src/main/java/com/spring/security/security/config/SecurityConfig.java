@@ -32,10 +32,10 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    @Bean
-    public SecurityContextRepository securityContextRepository() {
-        return new HttpSessionSecurityContextRepository();
-    }
+//    @Bean
+//    public SecurityContextRepository securityContextRepository() {
+//        return new HttpSessionSecurityContextRepository();
+//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider(AutenticacaoService autenticacaoService) {
@@ -71,13 +71,13 @@ public class SecurityConfig {
         config.sessionManagement(custom -> custom.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         config.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // <<<
-        config.authorizeHttpRequests(http -> {
-            http.requestMatchers(HttpMethod.POST, "/usuario")
-                    .hasAuthority(Perfil.ADMIN.getAuthority()); //pode colocar ("ADMIN"), mas é ideal dese jeito
-            http.requestMatchers(HttpMethod.POST, "/auth/login")
-                    .permitAll();
-            http.anyRequest().authenticated();
-        });
+//        config.authorizeHttpRequests(http -> {
+//            http.requestMatchers(HttpMethod.POST, "/usuario")
+//                    .hasAuthority(Perfil.ADMIN.getAuthority()); //pode colocar ("ADMIN"), mas é ideal dese jeito
+//            http.requestMatchers(HttpMethod.POST, "/auth/login")
+//                    .permitAll();
+//            http.anyRequest().authenticated();
+//        });
         config.cors(custom -> custom.configurationSource(corsConfigurationSource()));
         return config.build();
     }
@@ -111,27 +111,16 @@ public class SecurityConfig {
         return source;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-//        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+////        return new BCryptPasswordEncoder();
+//    }
 
 //    @Bean
 //    public UserDetailsService authenticationService() {
 //        List<Usuario> usuarios = usuarioRepository.findAll();
-//        List<UserDetails> users = new ArrayList<>(usuarios);
-//
-//        return new InMemoryUserDetailsManager(users); //em memoria, se mudar um usuário,
-//                                                     // ele n consegue ver a atualização
-//        UserDetails user = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder()
-//                        .encode("Sena!123"))
-//                .build();
-//        UserDetails user2 = User.builder()
-//                .username("funcionario")
-//                .password(passwordEncoder()
+//      .password(passwordEncoder()
 //                        .encode("Sena!123"))
 //                .build();
 //    }

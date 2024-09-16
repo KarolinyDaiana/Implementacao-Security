@@ -72,9 +72,6 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-    // Todas que são permitAll devem ser descritas aqui.
-    // Pode-se também criar um array com todos os endpoints concatenados, aí fazer um for.
     private boolean isPublicEndpoint(String uri, String method) {
         return uri.equals("/auth/login") && method.equals("POST");
     }

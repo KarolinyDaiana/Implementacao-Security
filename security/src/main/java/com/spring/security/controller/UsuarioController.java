@@ -19,7 +19,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIM')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> criarUsuario(@RequestBody Usuario usuario) {
         usuarioService.criarUsuario(usuario);
         return ResponseEntity.ok().build();
